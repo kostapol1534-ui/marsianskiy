@@ -1,0 +1,125 @@
+// Редактируемые маршруты marsianskiy.
+// DOMAIN-SUFFIX в mihomo включает сам домен и его поддомены.
+// Не добавляйте один домен/IP в разные сервисы: при запуске выполняется проверка пересечений.
+// Широкие корни google.com, googleapis.com, gstatic.com и cloudflare.com запрещены,
+// чтобы одна карточка не перенаправляла чужие сервисы. Изменения применяются при переподключении.
+[
+  {
+    "id": "twitch", "name": "Twitch", "mark": "TW", "color": "#A970FF",
+    "description": "Сайт, приложение, видео и чат",
+    "domains": ["twitch.tv", "ttvnw.net", "jtvnw.net", "twitchcdn.net", "twitchsvc.net", "live-video.net"], "ipCidrs": []
+  },
+  {
+    "id": "openai", "name": "ChatGPT / OpenAI", "mark": "AI", "color": "#75C7AF",
+    "description": "ChatGPT, API и файлы OpenAI",
+    "domains": ["openai.com", "chatgpt.com", "oaistatic.com", "oaiusercontent.com", "openai-api.arkoselabs.com"], "ipCidrs": []
+  },
+  {
+    "id": "tiktok", "name": "TikTok", "mark": "TT", "color": "#FE2C55",
+    "description": "Сайт, приложение и медиа CDN",
+    "domains": ["tiktok.com", "tiktokcdn.com", "tiktokv.com", "tiktokd.org", "tiktokw.us", "ttlivecdn.com", "byteoversea.com", "ibytedtos.com", "ibyteimg.com", "muscdn.com", "musical.ly", "isnssdk.com", "bytefcdn.com", "tiktok.eu"], "ipCidrs": []
+  },
+  {
+    "id": "roblox", "name": "Roblox", "mark": "RB", "color": "#E65B63",
+    "description": "Игры, сайт и загрузка ресурсов",
+    "domains": ["roblox.com", "rbxcdn.com", "robloxlabs.com", "rbxinfra.com"], "ipCidrs": []
+  },
+  {
+    "id": "soundcloud", "name": "SoundCloud", "mark": "SC", "color": "#FF7700",
+    "description": "Сайт, приложение и аудиопотоки",
+    "domains": ["soundcloud.com", "sndcdn.com", "soundcloud.cloud"], "ipCidrs": []
+  },
+  {
+    "id": "gemini", "name": "Gemini", "mark": "GM", "color": "#6F9BFF",
+    "description": "Без маршрутизации всего Google",
+    "domains": ["gemini.google.com", "deepmind.google", "aistudio.google.com", "generativelanguage.googleapis.com", "ai.google.dev", "alkalimakersuite-pa.clients6.google.com"],
+    // Отдельная настройка в приложении. Включает только вход в Google, не весь Google.
+    "optionalDomains": ["accounts.google.com"], "ipCidrs": []
+  },
+  {
+    "id": "chess", "name": "Chess.com", "mark": "CH", "color": "#81B64C",
+    "description": "Игры, сайт и ресурсы",
+    "domains": ["chess.com", "chesscomfiles.com", "chessclub.com"], "ipCidrs": []
+  },
+  {
+    "id": "youtube", "name": "YouTube", "mark": "YT", "color": "#FF4E45",
+    "description": "Сайт, приложение и видео CDN",
+    "domains": ["youtube.com", "youtu.be", "ytimg.com", "googlevideo.com", "youtube-nocookie.com", "youtube.googleapis.com", "youtubei.googleapis.com", "yt3.ggpht.com"], "ipCidrs": []
+  },
+  {
+    "id": "twitter", "name": "X / Twitter", "mark": "X", "color": "#AAB4C4",
+    "description": "Сайт, приложение и медиа",
+    "domains": ["x.com", "twitter.com", "twimg.com", "t.co", "twtrdns.net"], "ipCidrs": []
+  },
+  {
+    "id": "facebook", "name": "Facebook", "mark": "FB", "color": "#4E8DFF",
+    "description": "Сайт, приложение и Facebook CDN",
+    "domains": ["facebook.com", "fb.com", "fbcdn.net", "fbsbx.com", "facebook.net", "m.me"], "ipCidrs": []
+  },
+  {
+    "id": "2ip", "name": "2ip.io", "mark": "2IP", "color": "#63C7E6",
+    "description": "Проверка IP выбранного маршрута",
+    "domains": ["2ip.io"], "ipCidrs": []
+  },
+  {
+    "id": "instagram", "name": "Instagram", "mark": "IG", "color": "#E46CA8",
+    "description": "Сайт, приложение и медиа CDN",
+    "domains": ["instagram.com", "cdninstagram.com", "ig.me", "igsonar.com"], "ipCidrs": []
+  },
+  {
+    "id": "cloudflare", "name": "Cloudflare", "mark": "CF", "color": "#F5A623",
+    "description": "Панель, документация и DNS 1.1.1.1",
+    // Намеренно нет cloudflare.com/cloudflare.net: это затронуло бы чужие CDN-сайты.
+    "domains": ["www.cloudflare.com", "developers.cloudflare.com", "dash.cloudflare.com", "api.cloudflare.com", "blog.cloudflare.com", "community.cloudflare.com", "one.one.one.one", "cloudflare-dns.com"],
+    "ipCidrs": ["1.1.1.1/32", "1.0.0.1/32", "2606:4700:4700::1111/128", "2606:4700:4700::1001/128"]
+  },
+  {
+    "id": "telegram", "name": "Telegram", "mark": "TG", "color": "#54B7E8",
+    "description": "Домены и официальные IP сети Telegram",
+    "domains": ["telegram.org", "t.me", "telegra.ph", "telegram.me", "cdn-telegram.org", "telesco.pe"],
+    "ipCidrs": ["91.108.4.0/22", "91.108.8.0/22", "91.108.12.0/22", "91.108.16.0/22", "91.108.20.0/22", "91.108.56.0/22", "149.154.160.0/20", "185.76.151.0/24", "2001:b28:f23d::/48", "2001:b28:f23f::/48", "2001:67c:4e8::/48", "2001:b28:f23c::/48"]
+  },
+  {
+    "id": "notion", "name": "Notion", "mark": "NO", "color": "#D8DDE6",
+    "description": "Сайт, приложение и пользовательские файлы",
+    "domains": ["notion.so", "notion.site", "notion-static.com", "notionusercontent.com", "notion.com"], "ipCidrs": []
+  },
+  {
+    "id": "spotify", "name": "Spotify", "mark": "SP", "color": "#4FD47B",
+    "description": "Сайт, приложение и аудио CDN",
+    "domains": ["spotify.com", "scdn.co", "spotifycdn.com", "spotifycdn.net", "spotify.link"], "ipCidrs": []
+  },
+  {
+    "id": "figma", "name": "Figma", "mark": "FI", "color": "#F27D62",
+    "description": "Редактор, файлы и ресурсы",
+    "domains": ["figma.com", "figmausercontent.com", "figma-alpha.com", "figma.net"], "ipCidrs": []
+  },
+  {
+    "id": "whatsapp", "name": "WhatsApp", "mark": "WA", "color": "#55D66B",
+    "description": "Сообщения, звонки и служебные домены",
+    "domains": ["whatsapp.com", "whatsapp.net", "wa.me"], "ipCidrs": []
+  },
+  {
+    "id": "pinterest", "name": "Pinterest", "mark": "PI", "color": "#E65D68",
+    "description": "Сайт, приложение и изображения",
+    "domains": ["pinterest.com", "pinimg.com", "pinterest.net"], "ipCidrs": []
+  },
+  {
+    "id": "discord", "name": "Discord", "mark": "DI", "color": "#7D8FFF",
+    "description": "Сообщения, голос и медиа",
+    "domains": ["discord.gg", "discord.com", "discordapp.com", "discordapp.net", "discord.media", "discordstatus.com"], "ipCidrs": []
+  },
+  {
+    "id": "fortnite", "name": "Fortnite", "mark": "FN", "color": "#4B8DFF",
+    "description": "Игра, лаунчер и Easy Anti-Cheat",
+    "domains": ["fortnite.com", "epicgames.com", "epicgames.dev", "unrealengine.com", "easy.ac", "eac-cdn.org"],
+    // Процессы нужны для динамических игровых IP: весь AWS/CloudFront не перенаправляется.
+    "processNames": ["FortniteClient-Win64-Shipping.exe", "EpicGamesLauncher.exe", "EasyAntiCheat.exe", "EasyAntiCheat_EOS.exe"],
+    "ipCidrs": []
+  },
+  {
+    "id": "claude", "name": "Claude", "mark": "CL", "color": "#D88A67",
+    "description": "Claude, Anthropic API и файлы",
+    "domains": ["claude.ai", "claude.com", "anthropic.com", "claudeusercontent.com"], "ipCidrs": []
+  }
+]

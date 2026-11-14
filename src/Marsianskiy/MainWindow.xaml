@@ -1,0 +1,419 @@
+<Window x:Class="Marsianskiy.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:Marsianskiy.Controls"
+        xmlns:svg="clr-namespace:SharpVectors.Converters;assembly=SharpVectors.Converters.Wpf"
+        mc:Ignorable="d"
+        Title="marsianskiy" Width="1380" Height="900" MinWidth="1120" MinHeight="740"
+        WindowStyle="None" WindowStartupLocation="CenterScreen">
+  <Window.Resources>
+    <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    <Style x:Key="Card" TargetType="Border">
+      <Setter Property="Background" Value="{StaticResource CardBrush}" />
+      <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="16" />
+      <Setter Property="Padding" Value="20" />
+      <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+      <Setter Property="RenderTransform"><Setter.Value><TranslateTransform /></Setter.Value></Setter>
+      <Setter Property="Effect"><Setter.Value><DropShadowEffect Color="#000000" BlurRadius="24" ShadowDepth="5" Opacity="0.28" /></Setter.Value></Setter>
+      <Style.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+          <BeginStoryboard><Storyboard><DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.28" /><DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" From="10" To="0" Duration="0:0:0.34"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction></DoubleAnimation></Storyboard></BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="MouseEnter"><BeginStoryboard><Storyboard><ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#1C2738" Duration="0:0:0.16" /><DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" To="-2" Duration="0:0:0.16" /></Storyboard></BeginStoryboard></EventTrigger>
+        <EventTrigger RoutedEvent="MouseLeave"><BeginStoryboard><Storyboard><ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#151E2B" Duration="0:0:0.2" /><DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" To="0" Duration="0:0:0.2" /></Storyboard></BeginStoryboard></EventTrigger>
+      </Style.Triggers>
+    </Style>
+    <Style x:Key="HeroCard" TargetType="Border" BasedOn="{StaticResource Card}">
+      <Setter Property="BorderBrush" Value="#3A465C" />
+      <Setter Property="Background"><Setter.Value><LinearGradientBrush StartPoint="0,0" EndPoint="1,1"><GradientStop Color="#1C283B" Offset="0" /><GradientStop Color="#141D2D" Offset="0.55" /><GradientStop Color="#111824" Offset="1" /></LinearGradientBrush></Setter.Value></Setter>
+    </Style>
+    <Style x:Key="SectionTitle" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+      <Setter Property="FontSize" Value="16" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style x:Key="Caption" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style x:Key="WindowButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Foreground" Value="#A9B4C6" />
+      <Setter Property="Padding" Value="11,3" />
+      <Setter Property="FontSize" Value="14" />
+    </Style>
+    <Style x:Key="ActionIcon" TargetType="svg:SvgViewbox">
+      <Setter Property="Width" Value="18" />
+      <Setter Property="Height" Value="18" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="NavButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="2,0,0,0" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="Foreground" Value="{StaticResource MutedBrush}" />
+      <Setter Property="Padding" Value="7,12" />
+      <Setter Property="Margin" Value="8,3" />
+      <Setter Property="FontSize" Value="12" />
+    </Style>
+    <Style x:Key="RouteToggle" TargetType="CheckBox">
+      <Setter Property="Cursor" Value="Hand" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="CheckBox">
+            <Border x:Name="Track" Width="42" Height="24" CornerRadius="12" Background="#303A4A" BorderBrush="#455064" BorderThickness="1">
+              <Ellipse x:Name="Thumb" Width="16" Height="16" Fill="#A8B1C0" HorizontalAlignment="Left" Margin="3,0,0,0" RenderTransformOrigin="0.5,0.5"><Ellipse.RenderTransform><TranslateTransform /></Ellipse.RenderTransform></Ellipse>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="Track" Property="Background" Value="{StaticResource AccentBrush}" />
+                <Setter TargetName="Track" Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+                <Setter TargetName="Thumb" Property="Fill" Value="#151020" />
+                <Trigger.EnterActions><BeginStoryboard><Storyboard><DoubleAnimation Storyboard.TargetName="Thumb" Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" To="18" Duration="0:0:0.18" /></Storyboard></BeginStoryboard></Trigger.EnterActions>
+                <Trigger.ExitActions><BeginStoryboard><Storyboard><DoubleAnimation Storyboard.TargetName="Thumb" Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" To="0" Duration="0:0:0.16" /></Storyboard></BeginStoryboard></Trigger.ExitActions>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="ServiceCard" TargetType="Border">
+      <Setter Property="Background" Value="{StaticResource CardBrush}" />
+      <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="15" />
+      <Setter Property="Padding" Value="15" />
+      <Setter Property="Effect"><Setter.Value><DropShadowEffect Color="#000000" BlurRadius="18" ShadowDepth="4" Opacity="0.24" /></Setter.Value></Setter>
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding Enabled}" Value="True"><Setter Property="Background" Value="#3A291F" /><Setter Property="BorderBrush" Value="{StaticResource AccentDarkBrush}" /></DataTrigger>
+      </Style.Triggers>
+    </Style>
+    <Style x:Key="SelectToggle" TargetType="CheckBox">
+      <Setter Property="Cursor" Value="Hand" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="CheckBox">
+            <Border x:Name="Box" Width="20" Height="20" CornerRadius="6" Background="#38404D" BorderBrush="#667085" BorderThickness="1">
+              <TextBlock x:Name="Check" Text="✓" Foreground="#24160D" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0" />
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsChecked" Value="True"><Setter TargetName="Box" Property="Background" Value="{StaticResource AccentBrush}" /><Setter TargetName="Box" Property="BorderBrush" Value="{StaticResource AccentBrush}" /><Setter TargetName="Check" Property="Opacity" Value="1" /></Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style TargetType="ListBox"><Setter Property="Background" Value="Transparent" /><Setter Property="BorderThickness" Value="0" /></Style>
+    <Style TargetType="ListBoxItem">
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="Margin" Value="0,3" />
+      <Setter Property="Padding" Value="12" />
+      <Setter Property="Background" Value="#111925" />
+      <Setter Property="BorderBrush" Value="#263043" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ListBoxItem">
+            <Border x:Name="Item" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="9" Padding="{TemplateBinding Padding}"><ContentPresenter /></Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Item" Property="Background" Value="#1B2636" /></Trigger>
+              <Trigger Property="IsSelected" Value="True"><Setter TargetName="Item" Property="BorderBrush" Value="{StaticResource AccentBrush}" /><Setter TargetName="Item" Property="Background" Value="#20243A" /></Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style TargetType="ComboBoxItem">
+      <Setter Property="Background" Value="#111925" />
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="Padding" Value="10,8" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ComboBoxItem">
+            <Border x:Name="Item" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="5"><ContentPresenter /></Border>
+            <ControlTemplate.Triggers><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Item" Property="Background" Value="#28334A" /></Trigger><Trigger Property="IsSelected" Value="True"><Setter TargetName="Item" Property="Background" Value="#403663" /></Trigger></ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </Window.Resources>
+
+  <Grid Background="{StaticResource WindowBrush}">
+    <Grid.RowDefinitions><RowDefinition Height="34" /><RowDefinition Height="*" /></Grid.RowDefinitions>
+    <Grid.ColumnDefinitions><ColumnDefinition Width="92" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+
+    <Border Grid.Row="0" Grid.ColumnSpan="2" Background="#090E17" BorderBrush="#202939" BorderThickness="0,0,0,1" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+      <Grid Margin="10,0,4,0">
+        <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+          <controls:PlanetView Width="24" Height="24" />
+          <TextBlock Text="marsianskiy" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" Margin="8,0,0,0" />
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal">
+          <Button x:Name="MinimizeWindowButton" Content="—" Style="{StaticResource WindowButton}" Click="WindowMinimize_Click" />
+          <Button x:Name="MaximizeWindowButton" Content="□" Style="{StaticResource WindowButton}" Click="WindowMaximize_Click" />
+          <Button x:Name="CloseWindowButton" Content="×" Style="{StaticResource WindowButton}" Click="WindowClose_Click" />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <Border Grid.Row="1" Grid.Column="0" Background="#0C111A" BorderBrush="#202939" BorderThickness="0,0,1,0">
+      <Grid>
+        <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+        <controls:PlanetView Width="64" Height="64" Margin="0,16,0,12" HorizontalAlignment="Center" />
+        <StackPanel Grid.Row="1">
+          <Button x:Name="DashboardNav" Command="{Binding NavigateCommand}" CommandParameter="dashboard">
+            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource NavButton}"><Style.Triggers><DataTrigger Binding="{Binding CurrentPage}" Value="dashboard"><Setter Property="Background" Value="#3A281C" /><Setter Property="Foreground" Value="{StaticResource AccentBrush}" /><Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" /></DataTrigger></Style.Triggers></Style></Button.Style>
+            <StackPanel><svg:SvgViewbox Source="pack://application:,,,/Marsianskiy;component/Assets/Ui/home.svg" Style="{StaticResource ActionIcon}" /><TextBlock Text="Главная" HorizontalAlignment="Center" Margin="0,6,0,0" /></StackPanel>
+          </Button>
+          <Button x:Name="ServicesNav" Command="{Binding NavigateCommand}" CommandParameter="services">
+            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource NavButton}"><Style.Triggers><DataTrigger Binding="{Binding CurrentPage}" Value="services"><Setter Property="Background" Value="#3A281C" /><Setter Property="Foreground" Value="{StaticResource AccentBrush}" /><Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" /></DataTrigger></Style.Triggers></Style></Button.Style>
+            <StackPanel><svg:SvgViewbox Source="pack://application:,,,/Marsianskiy;component/Assets/Ui/services.svg" Style="{StaticResource ActionIcon}" /><TextBlock Text="Сервисы" HorizontalAlignment="Center" Margin="0,6,0,0" /></StackPanel>
+          </Button>
+          <Button x:Name="ServersNav" Command="{Binding NavigateCommand}" CommandParameter="servers">
+            <Button.Style><Style TargetType="Button" BasedOn="{StaticResource NavButton}"><Style.Triggers><DataTrigger Binding="{Binding CurrentPage}" Value="servers"><Setter Property="Background" Value="#3A281C" /><Setter Property="Foreground" Value="{StaticResource AccentBrush}" /><Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" /></DataTrigger></Style.Triggers></Style></Button.Style>
+            <StackPanel><svg:SvgViewbox Source="pack://application:,,,/Marsianskiy;component/Assets/Ui/servers.svg" Style="{StaticResource ActionIcon}" /><TextBlock Text="Серверы" HorizontalAlignment="Center" Margin="0,6,0,0" /></StackPanel>
+          </Button>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Margin="0,0,0,16">
+          <Button x:Name="SettingsButton" Style="{StaticResource NavButton}" Command="{Binding OpenSettingsCommand}"><StackPanel><svg:SvgViewbox Source="pack://application:,,,/Marsianskiy;component/Assets/Ui/settings.svg" Style="{StaticResource ActionIcon}" /><TextBlock Text="Настройки" HorizontalAlignment="Center" Margin="0,6,0,0" /></StackPanel></Button>
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <Grid Grid.Row="1" Grid.Column="1">
+      <Grid.RowDefinitions><RowDefinition Height="74" /><RowDefinition /><RowDefinition Height="82" /></Grid.RowDefinitions>
+      <Border Grid.Row="0" Background="#0D121B" BorderBrush="#202939" BorderThickness="0,0,0,1">
+        <Grid Margin="26,0">
+          <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+          <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="marsianskiy" FontSize="23" FontWeight="SemiBold" />
+            <TextBlock Text="точные маршруты вместо VPN для всего браузера" Style="{StaticResource Caption}" />
+          </StackPanel>
+          <Border Grid.Column="1" Background="#151C28" CornerRadius="8" Padding="11,7" Margin="0,0,14,0" VerticalAlignment="Center">
+            <TextBlock VerticalAlignment="Center" FontSize="12" Foreground="{StaticResource MutedBrush}"><Run Text="mihomo " /><Run Text="{Binding EngineVersion, Mode=OneWay}" /></TextBlock>
+          </Border>
+          <Button x:Name="ConnectVpnButton" Grid.Column="2" Command="{Binding ConnectCommand}" Style="{StaticResource PrimaryButton}" MinWidth="174" VerticalAlignment="Center"><StackPanel Orientation="Horizontal" HorizontalAlignment="Center"><svg:SvgViewbox Source="pack://application:,,,/Marsianskiy;component/Assets/Ui/bolt.svg" Style="{StaticResource ActionIcon}" /><TextBlock Text="{Binding ConnectButtonText}" VerticalAlignment="Center" Margin="8,0,0,0" /></StackPanel></Button>
+          <ProgressBar Grid.ColumnSpan="3" Height="3" VerticalAlignment="Bottom" Margin="-26,0" IsIndeterminate="True" Foreground="{StaticResource AccentBrush}" Background="Transparent" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+        </Grid>
+      </Border>
+
+      <Grid Grid.Row="1" Background="{StaticResource WindowBrush}">
+        <ScrollViewer Background="Transparent" Visibility="{Binding IsDashboardVisible, Converter={StaticResource BoolToVisibility}}" VerticalScrollBarVisibility="Auto">
+          <StackPanel Margin="24,22">
+            <Border Style="{StaticResource HeroCard}" MinHeight="418">
+              <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="1.1*" /><ColumnDefinition Width="390" /></Grid.ColumnDefinitions>
+                <StackPanel VerticalAlignment="Center" Margin="12,0,20,0">
+                  <TextBlock Text="КОМБИНИРОВАННЫЙ РЕЖИМ" FontSize="28" FontWeight="SemiBold" TextWrapping="Wrap" />
+                  <TextBlock Text="Отдельный VPN-сервер для каждого сервиса. Сайты и приложения работают через доменные и IP-маршруты, а не через общий прокси браузера." Style="{StaticResource Caption}" FontSize="14" LineHeight="22" Margin="0,14,0,18" />
+                  <TextBlock Text="{Binding EnabledServicesText}" Foreground="{StaticResource AccentBrush}" FontWeight="SemiBold" />
+                  <StackPanel Orientation="Horizontal" Margin="0,22,0,0">
+                    <Button Content="Выбрать сервисы" Command="{Binding NavigateCommand}" CommandParameter="services" Style="{StaticResource PrimaryButton}" Padding="18,11" />
+                    <Button Content="Серверы и задержка" Command="{Binding NavigateCommand}" CommandParameter="servers" Margin="10,0,0,0" Padding="18,11" />
+                  </StackPanel>
+                  <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+                    <Button x:Name="RunDiagnosticsButton" Content="Проверить маршрут" Command="{Binding RunDiagnosticsCommand}" Padding="14,7" />
+                    <Button Content="Отчёт поддержки" Command="{Binding ExportReportCommand}" Margin="8,0,0,0" Padding="14,7" />
+                  </StackPanel>
+                  <TextBlock Text="Yandex DNS · 77.88.8.8 / 77.88.8.1" Style="{StaticResource Caption}" Margin="0,12,0,0" />
+                </StackPanel>
+                <controls:EarthGlobeView ReduceMotion="{Binding ReduceMotion}" Grid.Column="1" Width="390" Height="390" NodeName="{Binding SelectedServer.Name, FallbackValue=Ваш VPN, TargetNullValue=Ваш VPN}" NodeDetails="{Binding SelectedServer.Country, FallbackValue=Локальные серверы, TargetNullValue=Локальные серверы}" />
+              </Grid>
+            </Border>
+            <Border Style="{StaticResource Card}" Margin="0,12,0,0" Padding="12" BorderBrush="{StaticResource ErrorBrush}" Visibility="{Binding HasConflictWarning, Converter={StaticResource BoolToVisibility}}">
+              <TextBlock Text="{Binding ConflictWarning}" Foreground="{StaticResource ErrorBrush}" TextWrapping="Wrap" />
+            </Border>
+
+            <UniformGrid Columns="3" Margin="0,14">
+              <Border Style="{StaticResource Card}" Margin="0,0,7,0">
+                <StackPanel><StackPanel Orientation="Horizontal"><svg:SvgViewbox Source="pack://application:,,,/Marsianskiy;component/Assets/Ui/servers.svg" Style="{StaticResource ActionIcon}" Width="15" Height="15" /><TextBlock Text="Выбранный сервер" Style="{StaticResource Caption}" Margin="6,0,0,0" /></StackPanel><TextBlock Text="{Binding SelectedServer.Name, FallbackValue=Не выбран, TargetNullValue=Не выбран}" FontWeight="SemiBold" FontSize="17" Margin="0,7,0,3" TextTrimming="CharacterEllipsis" /><TextBlock Text="{Binding SelectedServer.Country, FallbackValue=Импортируйте подписку, TargetNullValue=Импортируйте подписку}" Style="{StaticResource Caption}" /></StackPanel>
+              </Border>
+              <Border Style="{StaticResource Card}" Margin="7,0">
+                <StackPanel><StackPanel Orientation="Horizontal"><svg:SvgViewbox Source="pack://application:,,,/Marsianskiy;component/Assets/Ui/bolt.svg" Style="{StaticResource ActionIcon}" Width="15" Height="15" /><TextBlock Text="Измеренная задержка" Style="{StaticResource Caption}" Margin="6,0,0,0" /></StackPanel><TextBlock Text="{Binding SelectedServer.LatencyText, FallbackValue=Не проверено, TargetNullValue=Не проверено}" FontWeight="SemiBold" FontSize="17" Margin="0,7,0,3" /><TextBlock Text="Реальный HTTPS-запрос через узел" Style="{StaticResource Caption}" /></StackPanel>
+              </Border>
+              <Border Style="{StaticResource Card}" Margin="7,0,0,0">
+                <StackPanel><StackPanel Orientation="Horizontal"><svg:SvgViewbox Source="pack://application:,,,/Marsianskiy;component/Assets/Ui/timer.svg" Style="{StaticResource ActionIcon}" Width="15" Height="15" /><TextBlock Text="Текущее состояние" Style="{StaticResource Caption}" Margin="6,0,0,0" /></StackPanel><TextBlock Text="{Binding SessionDurationText}" Foreground="{StaticResource AccentBrush}" FontWeight="SemiBold" FontSize="17" Margin="0,7,0,3" /><TextBlock Text="TUN · split routing" Style="{StaticResource Caption}" /></StackPanel>
+              </Border>
+            </UniformGrid>
+
+            <Border Style="{StaticResource Card}" Margin="0,14">
+              <StackPanel>
+                <TextBlock Text="Быстрые ярлыки" Style="{StaticResource SectionTitle}" />
+                <TextBlock Text="Открытие сайта в браузере по умолчанию. Маршрут зависит от переключателя на карточке сервиса." Style="{StaticResource Caption}" Margin="0,5,0,12" />
+                <ItemsControl ItemsSource="{Binding Services}">
+                  <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemTemplate><DataTemplate><Button Command="{Binding DataContext.OpenServiceCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" Margin="0,0,7,7" Padding="7,6" Width="68" Height="58" ToolTip="{Binding Name}"><StackPanel HorizontalAlignment="Center"><svg:SvgViewbox Source="{Binding Icon}" Style="{StaticResource ActionIcon}" Width="21" Height="21" /><TextBlock Text="{Binding Name}" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis" FontSize="10" Margin="0,5,0,0" /></StackPanel></Button></DataTemplate></ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+
+        <Grid Background="{StaticResource WindowBrush}" Visibility="{Binding IsServicesPageVisible, Converter={StaticResource BoolToVisibility}}" Margin="24,20">
+          <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition /></Grid.RowDefinitions>
+          <Grid Margin="0,0,0,12">
+            <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+            <StackPanel><TextBlock Text="Сервисы" FontSize="24" FontWeight="SemiBold" /><TextBlock Text="Выберите нужные маршруты — остальной трафик останется прямым." Style="{StaticResource Caption}" Margin="0,4,0,0" /></StackPanel>
+            <StackPanel Grid.Column="1" Margin="0,0,12,0" VerticalAlignment="Center"><StackPanel Orientation="Horizontal" Margin="0,0,0,3"><svg:SvgViewbox Source="pack://application:,,,/Marsianskiy;component/Assets/Ui/search.svg" Style="{StaticResource ActionIcon}" Width="14" Height="14" /><TextBlock Text="Поиск" Style="{StaticResource Caption}" Margin="6,0,0,0" /></StackPanel><TextBox x:Name="ServiceSearchBox" Width="190" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" /></StackPanel>
+            <Button Grid.Column="2" Content="Переподключить" Command="{Binding ReconnectCommand}" VerticalAlignment="Center" />
+          </Grid>
+          <UniformGrid Grid.Row="1" Columns="5" Margin="0,0,0,14">
+            <Button x:Name="FilterAll" Content="Все" Command="{Binding FilterServicesCommand}" CommandParameter="all"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Style.Triggers><DataTrigger Binding="{Binding CurrentServiceFilter}" Value="all"><Setter Property="Background" Value="{StaticResource AccentBrush}" /><Setter Property="Foreground" Value="#24160D" /></DataTrigger></Style.Triggers></Style></Button.Style></Button>
+            <Button x:Name="FilterGames" Content="Игры" Command="{Binding FilterServicesCommand}" CommandParameter="games" Margin="8,0,0,0"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Style.Triggers><DataTrigger Binding="{Binding CurrentServiceFilter}" Value="games"><Setter Property="Background" Value="{StaticResource AccentBrush}" /><Setter Property="Foreground" Value="#24160D" /></DataTrigger></Style.Triggers></Style></Button.Style></Button>
+            <Button Content="Соцсети" Command="{Binding FilterServicesCommand}" CommandParameter="social" Margin="8,0,0,0"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Style.Triggers><DataTrigger Binding="{Binding CurrentServiceFilter}" Value="social"><Setter Property="Background" Value="{StaticResource AccentBrush}" /><Setter Property="Foreground" Value="#24160D" /></DataTrigger></Style.Triggers></Style></Button.Style></Button>
+            <Button Content="ИИ" Command="{Binding FilterServicesCommand}" CommandParameter="ai" Margin="8,0,0,0"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Style.Triggers><DataTrigger Binding="{Binding CurrentServiceFilter}" Value="ai"><Setter Property="Background" Value="{StaticResource AccentBrush}" /><Setter Property="Foreground" Value="#24160D" /></DataTrigger></Style.Triggers></Style></Button.Style></Button>
+            <Button Content="Ещё" Command="{Binding FilterServicesCommand}" CommandParameter="other" Margin="8,0,0,0"><Button.Style><Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}"><Style.Triggers><DataTrigger Binding="{Binding CurrentServiceFilter}" Value="other"><Setter Property="Background" Value="{StaticResource AccentBrush}" /><Setter Property="Foreground" Value="#24160D" /></DataTrigger></Style.Triggers></Style></Button.Style></Button>
+          </UniformGrid>
+          <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,12">
+            <TextBlock Text="Профили:" Style="{StaticResource Caption}" VerticalAlignment="Center" Margin="0,0,8,0" />
+            <Button x:Name="ProfileGames" Content="Игры" Command="{Binding ApplyProfileCommand}" CommandParameter="games" Padding="12,6" />
+            <Button Content="Стриминг" Command="{Binding ApplyProfileCommand}" CommandParameter="stream" Padding="12,6" Margin="7,0,0,0" />
+            <Button Content="Работа" Command="{Binding ApplyProfileCommand}" CommandParameter="work" Padding="12,6" Margin="7,0,0,0" />
+          </StackPanel>
+          <ScrollViewer Grid.Row="3" Background="Transparent" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Services}" Background="Transparent" VerticalAlignment="Top">
+              <ItemsControl.ItemsPanel><ItemsPanelTemplate><UniformGrid Columns="3" VerticalAlignment="Top" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Border Style="{StaticResource ServiceCard}" Margin="0,0,10,10" Height="205">
+                    <Grid>
+                      <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+                      <Grid>
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                        <Grid Width="48" Height="48">
+                          <Border x:Name="IconTile" Width="48" Height="48" CornerRadius="14" Background="{Binding Color}" Padding="10" RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform><ScaleTransform /></Border.RenderTransform>
+                            <Border.Effect><DropShadowEffect Color="{Binding Color}" BlurRadius="18" ShadowDepth="0" Opacity="0.55" /></Border.Effect>
+                            <Grid><Border CornerRadius="14"><Border.Background><LinearGradientBrush EndPoint="0,1"><GradientStop Color="#70FFFFFF" Offset="0" /><GradientStop Color="#00FFFFFF" Offset="0.65" /></LinearGradientBrush></Border.Background><svg:SvgViewbox Source="{Binding Icon}" /></Border></Grid>
+                          </Border>
+                          <CheckBox AutomationProperties.AutomationId="{Binding Id, StringFormat=Route_{0}}" IsChecked="{Binding Enabled, Mode=TwoWay}" Style="{StaticResource SelectToggle}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-5,-5,0,0" />
+                        </Grid>
+                        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center"><TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="15" TextTrimming="CharacterEllipsis" /><TextBlock Text="{Binding Description}" Style="{StaticResource Caption}" FontSize="11" TextTrimming="CharacterEllipsis" Margin="0,3,0,0" /></StackPanel>
+                      </Grid>
+                      <StackPanel Grid.Row="1" Margin="0,13,0,10">
+                        <TextBlock Text="{Binding TargetCountry}" Foreground="{StaticResource AccentBrush}" FontSize="12" FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding TargetMode}" Style="{StaticResource Caption}" FontSize="11" Margin="0,3,0,0" />
+                        <TextBlock Text="Маршрутизация выключена" FontSize="10" Margin="0,3,0,0"><TextBlock.Style><Style TargetType="TextBlock" BasedOn="{StaticResource Caption}"><Style.Triggers><DataTrigger Binding="{Binding Enabled}" Value="True"><Setter Property="Text" Value="Маршрутизация включена" /></DataTrigger></Style.Triggers></Style></TextBlock.Style></TextBlock>
+                      </StackPanel>
+                      <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                        <ComboBox ItemsSource="{Binding Targets}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding Target, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" MinWidth="0" />
+                        <Button Grid.Column="1" Content="↗" ToolTip="Открыть сайт сервиса" Command="{Binding DataContext.OpenServiceCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" Padding="8,5" Margin="7,0,0,0" MinWidth="32" />
+                      </Grid>
+                    </Grid>
+                  </Border>
+                  <DataTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                      <Trigger.EnterActions><BeginStoryboard><Storyboard><DoubleAnimation Storyboard.TargetName="IconTile" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1.09" Duration="0:0:0.18"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction></DoubleAnimation><DoubleAnimation Storyboard.TargetName="IconTile" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1.09" Duration="0:0:0.18"><DoubleAnimation.EasingFunction><CubicEase EasingMode="EaseOut" /></DoubleAnimation.EasingFunction></DoubleAnimation></Storyboard></BeginStoryboard></Trigger.EnterActions>
+                      <Trigger.ExitActions><BeginStoryboard><Storyboard><DoubleAnimation Storyboard.TargetName="IconTile" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2" /><DoubleAnimation Storyboard.TargetName="IconTile" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2" /></Storyboard></BeginStoryboard></Trigger.ExitActions>
+                    </Trigger>
+                  </DataTemplate.Triggers>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </ScrollViewer>
+        </Grid>
+
+        <Grid Background="{StaticResource WindowBrush}" Visibility="{Binding IsServersPageVisible, Converter={StaticResource BoolToVisibility}}" Margin="24,20">
+          <Grid.ColumnDefinitions><ColumnDefinition Width="340" /><ColumnDefinition Width="20" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+          <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <Border Style="{StaticResource Card}">
+                <StackPanel>
+                  <TextBlock Text="Личная подписка" Style="{StaticResource SectionTitle}" />
+                  <TextBlock Text="URL скрыт. Загрузка идёт напрямую, без аналитики." Style="{StaticResource Caption}" Margin="0,6,0,12" />
+                  <PasswordBox x:Name="SubscriptionUrlBox" />
+                  <Button x:Name="ImportUrlButton" Click="ImportUrl_Click" Margin="0,9,0,0"><StackPanel Orientation="Horizontal" HorizontalAlignment="Center"><svg:SvgViewbox Source="pack://application:,,,/Marsianskiy;component/Assets/Ui/download.svg" Style="{StaticResource ActionIcon}" /><TextBlock Text="Импорт URL" VerticalAlignment="Center" Margin="7,0,0,0" /></StackPanel></Button>
+                  <Grid Margin="0,8,0,0"><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="8" /><ColumnDefinition /></Grid.ColumnDefinitions><Button Content="Из файла" Command="{Binding ImportFileCommand}" /><Button Grid.Column="2" Content="Из буфера" Command="{Binding ImportClipboardCommand}" /></Grid>
+                  <TextBlock Text="Автообновление, часов" Style="{StaticResource Caption}" Margin="0,12,0,4" />
+                  <ComboBox SelectedValue="{Binding SubscriptionRefreshHours}"><ComboBoxItem Content="0" /><ComboBoxItem Content="6" /><ComboBoxItem Content="12" /><ComboBoxItem Content="24" /></ComboBox>
+                  <Button Content="Обновить сейчас" Command="{Binding RefreshSubscriptionCommand}" Margin="0,8,0,0" />
+                </StackPanel>
+              </Border>
+              <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                <StackPanel>
+                  <TextBlock Text="Автовыбор" Style="{StaticResource SectionTitle}" />
+                  <TextBlock Text="Проверяются только серверы этой подписки, одновременно не более четырёх." Style="{StaticResource Caption}" Margin="0,6,0,12" />
+                  <Button x:Name="AutoSelectButton" Command="{Binding AutoSelectCommand}" Style="{StaticResource PrimaryButton}"><StackPanel Orientation="Horizontal" HorizontalAlignment="Center"><svg:SvgViewbox Source="pack://application:,,,/Marsianskiy;component/Assets/Ui/bolt.svg" Style="{StaticResource ActionIcon}" /><TextBlock Text="Автовыбор · HTTPS" VerticalAlignment="Center" Margin="7,0,0,0" /></StackPanel></Button>
+                  <Button Content="Проверить выбранный" Command="{Binding MeasureSelectedCommand}" Margin="0,8,0,0" />
+                  <Button Content="Назначить всем" Command="{Binding AssignSelectedCommand}" Margin="0,8,0,0" />
+                </StackPanel>
+              </Border>
+              <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                <StackPanel><TextBlock Text="Подпись страны" Style="{StaticResource SectionTitle}" /><TextBox Text="{Binding SelectedServer.Country, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,0,8" /><Button Content="Сохранить страну" Command="{Binding SaveCountryCommand}" /></StackPanel>
+              </Border>
+            </StackPanel>
+          </ScrollViewer>
+          <Border Grid.Column="2" Style="{StaticResource Card}" Padding="18">
+            <Grid>
+              <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition /></Grid.RowDefinitions>
+              <Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><StackPanel><TextBlock Text="Серверы подписки" Style="{StaticResource SectionTitle}" /><TextBlock Text="Название, протокол, страна и измеренная задержка" Style="{StaticResource Caption}" /></StackPanel><TextBlock Grid.Column="1" Text="{Binding Servers.Count, StringFormat={}{0} шт.}" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center" /></Grid>
+              <ListBox Grid.Row="1" ItemsSource="{Binding Servers}" SelectedItem="{Binding SelectedServer, Mode=TwoWay}">
+                <ListBox.ItemTemplate><DataTemplate><StackPanel><TextBlock Text="{Binding Name}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" /><Grid Margin="0,5,0,0"><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><TextBlock Text="{Binding ProtocolName}" Style="{StaticResource Caption}" /><TextBlock Grid.Column="1" Text="{Binding LatencyText}" Foreground="{StaticResource SuccessBrush}" FontSize="12" /></Grid><TextBlock Text="{Binding Country}" Style="{StaticResource Caption}" Margin="0,2,0,0" /></StackPanel></DataTemplate></ListBox.ItemTemplate>
+              </ListBox>
+            </Grid>
+          </Border>
+        </Grid>
+      </Grid>
+
+      <Border Grid.Row="2" Background="#0D121B" BorderBrush="#202939" BorderThickness="0,1,0,0">
+        <Grid Margin="24,8">
+          <Grid.RowDefinitions><RowDefinition /><RowDefinition /><RowDefinition /></Grid.RowDefinitions>
+          <Grid><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><TextBlock Text="{Binding StatusText}" FontWeight="SemiBold" FontSize="13" TextWrapping="Wrap" VerticalAlignment="Center" /><TextBlock x:Name="SessionDurationText" Grid.Column="1" Text="{Binding SessionDurationText}" Foreground="{StaticResource AccentBrush}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center" Margin="18,0,0,0" /></Grid>
+          <TextBlock Grid.Row="1" Text="{Binding Message}" Foreground="{StaticResource MutedBrush}" FontSize="12" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+          <TextBlock Grid.Row="2" Text="{Binding EngineMessage}" Foreground="#778499" FontSize="11" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+        </Grid>
+      </Border>
+    </Grid>
+
+    <Grid Grid.RowSpan="2" Grid.ColumnSpan="2" Panel.ZIndex="40" Background="#F5090C12" Visibility="{Binding IsOnboardingVisible, Converter={StaticResource BoolToVisibility}}" RenderTransformOrigin="0.5,0.5">
+      <Grid.RenderTransform><TranslateTransform /></Grid.RenderTransform>
+      <Grid.Style><Style TargetType="Grid"><Style.Triggers><DataTrigger Binding="{Binding IsOnboardingVisible}" Value="True"><DataTrigger.EnterActions><BeginStoryboard><Storyboard><DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.28" /><DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" From="16" To="0" Duration="0:0:0.42" /></Storyboard></BeginStoryboard></DataTrigger.EnterActions></DataTrigger></Style.Triggers></Style></Grid.Style>
+      <Border Width="940" Style="{StaticResource Card}" Padding="36" VerticalAlignment="Center">
+        <StackPanel>
+          <Grid>
+            <Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="310" /></Grid.ColumnDefinitions>
+            <StackPanel VerticalAlignment="Center" Margin="0,0,22,0"><controls:PlanetView Width="68" Height="68" HorizontalAlignment="Left" /><TextBlock Text="Добро пожаловать в marsianskiy" FontSize="29" FontWeight="SemiBold" Margin="0,20,0,10" TextWrapping="Wrap" /><TextBlock Text="Один VPN — отдельный маршрут для каждого нужного сервиса. Остальной трафик остаётся прямым." Style="{StaticResource Caption}" FontSize="15" LineHeight="23" /></StackPanel>
+            <controls:EarthGlobeView ReduceMotion="{Binding ReduceMotion}" Grid.Column="1" Width="310" Height="310" NodeName="{Binding SelectedServer.Name, FallbackValue=Ваш VPN, TargetNullValue=Ваш VPN}" NodeDetails="{Binding SelectedServer.Country, FallbackValue=Локальные серверы, TargetNullValue=Локальные серверы}" />
+          </Grid>
+          <UniformGrid Columns="3" Margin="0,12,0,24">
+            <Border Style="{StaticResource Card}" Padding="16" Margin="0,0,10,0"><StackPanel><TextBlock Text="01" Foreground="{StaticResource AccentBrush}" FontWeight="Bold" /><TextBlock Text="Локальный импорт" FontWeight="SemiBold" Margin="0,8,0,4" /><TextBlock Text="URL, файл или буфер. Без сторонней аналитики." Style="{StaticResource Caption}" /></StackPanel></Border>
+            <Border Style="{StaticResource Card}" Padding="16" Margin="5,0"><StackPanel><TextBlock Text="02" Foreground="{StaticResource AccentBrush}" FontWeight="Bold" /><TextBlock Text="Точные маршруты" FontWeight="SemiBold" Margin="0,8,0,4" /><TextBlock Text="Домены и IP каждого сервиса идут через свой узел." Style="{StaticResource Caption}" /></StackPanel></Border>
+            <Border Style="{StaticResource Card}" Padding="16" Margin="10,0,0,0"><StackPanel><TextBlock Text="03" Foreground="{StaticResource AccentBrush}" FontWeight="Bold" /><TextBlock Text="Защищённый DNS" FontWeight="SemiBold" Margin="0,8,0,4" /><TextBlock Text="Нет автоматического прямого fallback при сбое VPN." Style="{StaticResource Caption}" /></StackPanel></Border>
+          </UniformGrid>
+          <StackPanel Orientation="Horizontal"><Button x:Name="StartButton" Content="Начать настройку" Command="{Binding CloseOnboardingCommand}" Style="{StaticResource PrimaryButton}" Padding="22,12" /><Button Content="Открыть настройки" Command="{Binding OpenSettingsCommand}" Margin="10,0,0,0" Padding="20,12" /></StackPanel>
+        </StackPanel>
+      </Border>
+    </Grid>
+
+    <Grid Grid.RowSpan="2" Grid.ColumnSpan="2" Panel.ZIndex="45" Background="#B8090C12" Visibility="{Binding IsSettingsVisible, Converter={StaticResource BoolToVisibility}}" RenderTransformOrigin="0.5,0.5">
+      <Grid.RenderTransform><TranslateTransform /></Grid.RenderTransform>
+      <Grid.Style><Style TargetType="Grid"><Style.Triggers><DataTrigger Binding="{Binding IsSettingsVisible}" Value="True"><DataTrigger.EnterActions><BeginStoryboard><Storyboard><DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.2" /><DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" From="24" To="0" Duration="0:0:0.32" /></Storyboard></BeginStoryboard></DataTrigger.EnterActions></DataTrigger></Style.Triggers></Style></Grid.Style>
+      <Border Width="590" MaxHeight="680" Style="{StaticResource Card}" Padding="28" VerticalAlignment="Center">
+        <Grid>
+          <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+          <Grid><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions><StackPanel><TextBlock Text="Настройки" FontSize="26" FontWeight="SemiBold" /><TextBlock Text="Изменения сохраняются локально" Style="{StaticResource Caption}" Margin="0,4,0,0" /></StackPanel><Button x:Name="CloseSettingsButton" Grid.Column="1" Content="Закрыть" Command="{Binding CloseSettingsCommand}" VerticalAlignment="Top" /></Grid>
+          <ScrollViewer Grid.Row="1" Margin="0,22,0,22" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <Border Style="{StaticResource Card}" Padding="18" Margin="0,0,0,12"><StackPanel><TextBlock Text="Запуск Windows" Style="{StaticResource SectionTitle}" /><CheckBox x:Name="AutostartCheckBox" Content="Запускать marsianskiy при входе в Windows" IsChecked="{Binding StartWithWindows}" Margin="0,12,0,5" /><CheckBox x:Name="TrayCheckBox" Content="Сворачивать в системный трей при закрытии" IsChecked="{Binding CloseToTray}" Margin="0,5" /><CheckBox x:Name="ReconnectCheckBox" Content="Подключать последнюю конфигурацию при запуске" IsChecked="{Binding AutoReconnect}" Margin="0,5" /><CheckBox Content="Автоматически переключаться на резервный сервер" IsChecked="{Binding AutoFailover}" Margin="0,5" /><CheckBox x:Name="MotionCheckBox" Content="Уменьшить движение и анимации" IsChecked="{Binding ReduceMotion}" Margin="0,5" /><TextBlock Text="Автозапуск использует задание с повышенными правами. Подписка и ключи сохраняются с DPAPI-шифрованием." Style="{StaticResource Caption}" /></StackPanel></Border>
+              <Border Style="{StaticResource Card}" Padding="18"><StackPanel><TextBlock Text="Gemini и Google" Style="{StaticResource SectionTitle}" /><CheckBox Content="Направлять Google Sign-In через VPN" IsChecked="{Binding GeminiIncludeGoogleSignIn}" Margin="0,12,0,5" /><TextBlock Text="Добавляет только accounts.google.com. Домен google.com целиком не используется." Style="{StaticResource Caption}" /></StackPanel></Border>
+              <Border Style="{StaticResource Card}" Padding="18" Margin="0,12,0,0"><StackPanel><TextBlock Text="Маршруты сервисов" Style="{StaticResource SectionTitle}" /><TextBlock Text="Редактируемые домены и IP-диапазоны с проверкой пересечений." Style="{StaticResource Caption}" Margin="0,6,0,12" /><Grid><Grid.ColumnDefinitions><ColumnDefinition /><ColumnDefinition Width="8" /><ColumnDefinition /></Grid.ColumnDefinitions><Button Content="Редактировать" Command="{Binding EditRoutesCommand}" /><Button Grid.Column="2" Content="Проверить" Command="{Binding ReloadRoutesCommand}" /></Grid></StackPanel></Border>
+              <Border Style="{StaticResource Card}" Padding="18" Margin="0,12,0,0"><StackPanel><TextBlock Text="Локальные данные" Style="{StaticResource SectionTitle}" /><TextBlock Text="Состояние зашифровано DPAPI. Временные конфиги удаляются после остановки." Style="{StaticResource Caption}" Margin="0,6,0,6" /><TextBlock Text="{Binding DataDirectory}" Style="{StaticResource Caption}" /><Button Content="Открыть папку данных" Command="{Binding OpenDataDirectoryCommand}" Margin="0,12,0,0" HorizontalAlignment="Left" /></StackPanel></Border>
+              <Border Style="{StaticResource Card}" Padding="18" Margin="0,12,0,0"><StackPanel><TextBlock Text="Ярлык приложения" Style="{StaticResource SectionTitle}" /><TextBlock Text="Создать ярлык с иконкой планеты на рабочем столе." Style="{StaticResource Caption}" Margin="0,6,0,12" /><Button x:Name="CreateShortcutButton" Content="Создать ярлык на рабочем столе" Command="{Binding CreateShortcutCommand}" HorizontalAlignment="Left" /></StackPanel></Border>
+              <Border Style="{StaticResource Card}" Padding="18" Margin="0,12,0,0"><StackPanel><TextBlock Text="Движок и приветствие" Style="{StaticResource SectionTitle}" /><TextBlock Text="{Binding EngineVersion, StringFormat={}mihomo {0}; проверка -t перед каждым подключением}" Style="{StaticResource Caption}" Margin="0,6,0,12" /><Button x:Name="UpdateMihomoButton" Content="Обновить mihomo" Command="{Binding UpdateMihomoCommand}" HorizontalAlignment="Left" Margin="0,0,0,8" /><Button x:Name="ShowOnboardingButton" Content="Показать начальный экран" Command="{Binding ShowOnboardingCommand}" HorizontalAlignment="Left" /></StackPanel></Border>
+            </StackPanel>
+          </ScrollViewer>
+          <TextBlock Grid.Row="2" Text="{Binding StatusText}" Style="{StaticResource Caption}" TextTrimming="CharacterEllipsis" />
+        </Grid>
+      </Border>
+    </Grid>
+  </Grid>
+</Window>
